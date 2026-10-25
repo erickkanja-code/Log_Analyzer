@@ -6,6 +6,8 @@ everywhere. This is faster than rebuilding the same pattern for every line.
 
 import re
 
+from log_analyzer.decorators import cache
+
 # One line of an Apache/Nginx access log in Common Log Format, for example:
 # 192.168.1.10 - - [01/Oct/2026:13:55:36 +0000] "GET /index.html HTTP/1.1" 200 2326
 LOG_PATTERN = re.compile(
@@ -58,7 +60,7 @@ def find_emails(text: str) -> list[str]:
     """Return every email address found in text."""
     return EMAIL_PATTERN.findall(text)
 
-
+@cache
 def mask_emails(text: str) -> str:
     """Replace every email address in text with [EMAIL] to protect privacy."""
     return EMAIL_PATTERN.sub("[EMAIL]", text)
